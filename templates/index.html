@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ profile['name'] }} — резюме и портфолио</title>
+  <meta name="description" content="Лендинг-резюме и портфолио {{ profile['name'] }}: опыт, навыки, образование, проекты и контакты.">
+  <meta name="theme-color" content="#15110f">
+
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preload" as="image" href="{{ url_for('static', filename=profile['hero_media']) }}">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <noscript>
+    <style>
+      .preloader { display: none !important; }
+      .reveal { opacity: 1 !important; transform: none !important; }
+    </style>
+  </noscript>
+</head>
+<body>
+  <div class="preloader" aria-hidden="true">
+    <div class="preloader__inner">
+      <span class="preloader__star">✶</span>
+      <p>собираем авторское портфолио</p>
+    </div>
+  </div>
+
+  <div class="cursor-glow d-none d-lg-block" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container-xl">
+      <nav class="navbar navbar-expand-lg site-nav">
+        <a class="navbar-brand site-logo" href="#home" aria-label="Перейти к началу страницы">
+          <span class="site-logo__mark">atelier</span>
+          <span class="site-logo__name">{{ profile['name'] }}</span>
+        </a>
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Переключить навигацию">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav ms-auto gap-lg-3 align-items-lg-center">
+            <li class="nav-item"><a class="nav-link" href="#about">о проекте</a></li>
+            <li class="nav-item"><a class="nav-link" href="#experience">практика</a></li>
+            <li class="nav-item"><a class="nav-link" href="#projects">кейсы</a></li>
+            <li class="nav-item"><a class="nav-link" href="#gallery">галерея</a></li>
+            <li class="nav-item"><a class="nav-link" href="#contact">контакт</a></li>
+          </ul>
+          <a class="site-nav__cta magnetic" href="#contact">обсудить проект</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero section" id="home">
+      <div class="hero__bg-title">atelier</div>
+      <div class="container-xl">
+        <div class="hero__grid">
+          <div class="hero__content reveal">
+            <p class="eyebrow">illustration / editorial portfolio / visual storytelling</p>
+            <p class="hero__intro">портфолио художницы</p>
+            <h1 class="hero__title">
+              <span>{{ profile['name'] }}</span>
+              <strong>{{ profile['title'] }}</strong>
+            </h1>
+            <p class="hero__text">{{ profile['short_bio'] }}</p>
+
+            <div class="hero__actions d-flex flex-wrap gap-3">
+              <a class="btn btn-accent magnetic" href="#projects">смотреть кейсы</a>
+              <a class="btn btn-ghost magnetic" href="#contact">написать мне</a>
+            </div>
+
+            <div class="hero__metrics">
+              <article class="metric-card">
+                <span>избранное</span>
+                <strong>{{ projects|length }}</strong>
+                <p>кейса в фокусе для быстрого просмотра</p>
+              </article>
+              <article class="metric-card">
+                <span>архив</span>
+                <strong>{{ gallery|length }}</strong>
+                <p>дополнительных работ в авторской сетке</p>
+              </article>
+              <article class="metric-card">
+                <span>контакты</span>
+                <strong>{{ contacts|length }}</strong>
+                <p>способов связи для коллабораций и заказов</p>
+              </article>
+            </div>
+          </div>
+
+          <div class="hero__visual">
+            <article class="hero__media reveal tilt-card">
+              <div class="hero__badge">featured artwork</div>
+              <div class="hero__frame">
+                <img src="{{ url_for('static', filename=profile['hero_media']) }}" alt="Главное изображение портфолио {{ profile['name'] }}" fetchpriority="high" decoding="async">
+              </div>
+              <div class="hero__caption">
+                <div>
+                  <span>accent palette</span>
+                  <strong>{{ profile['accent_note'] }}</strong>
+                </div>
+                <p>мягкий свет, бумажная фактура и ощущение памяти о месте.</p>
+              </div>
+            </article>
+
+            <aside class="hero__aside reveal">
+              <p class="hero__aside-label">подходит для</p>
+              <h2>editorial, постеров, обложек и атмосферных серий</h2>
+              <p>Упор на композицию, цветовую драматургию и подачу, которая выглядит собранно и на экране, и в печати.</p>
+              <div class="hero__aside-links">
+                {% for item in contacts[:3] %}
+                  <a href="{{ item['url'] }}" target="_blank" rel="noopener noreferrer">{{ item['label'] }}</a>
+                {% endfor %}
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="statement section section--tight">
+      <div class="container-xl">
+        <div class="statement-panel reveal">
+          <div class="statement-panel__main">
+            <p class="eyebrow">почерк</p>
+            <h2 class="statement-title">Свет, воздух и бумажная мягкость работают здесь как полноценные персонажи сцены.</h2>
+            <p class="lead-copy">{{ profile['about_text'] }}</p>
+          </div>
+          <div class="statement-panel__tags">
+            {% for note in profile['accent_note'].split(' / ') %}
+              <span>{{ note }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about section" id="about">
+      <div class="container-xl">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">about</p>
+            <h2 class="section-title">Резюме и портфолио как <span>авторская витрина</span></h2>
+          </div>
+          <p class="section-note">Страница показывает не только навыки, но и настроение работ, логику подачи и удобный способ быстро перейти к кейсам и связи.</p>
+        </div>
+
+        <div class="about__grid">
+          <div class="about__visual reveal tilt-card">
+            <div class="about__visual-ring"></div>
+            <span class="about__stamp">palette board</span>
+            <img src="{{ url_for('static', filename='assets/palette-reference.png') }}" alt="Референс палитры проекта" class="about__palette" loading="lazy" decoding="async">
+          </div>
+
+          <div class="about__content reveal">
+            <p class="lead-copy">Это не просто учебный лендинг, а аккуратно собранная витрина: с сильным первым экраном, динамикой по секциям, живой галереей, модальным просмотром и серверной формой.</p>
+            <div class="about__facts">
+              <article class="fact-card">
+                <span>формат</span>
+                <strong>editorial portfolio</strong>
+                <p>Сайт собран так, чтобы сразу считывался и как CV, и как визуальная презентация.</p>
+              </article>
+              <article class="fact-card">
+                <span>типографика</span>
+                <strong>Anton / Cormorant / Mono</strong>
+                <p>Контраст между резким заголовком, мягкой антиквой и моно-деталями создаёт зрелую иерархию.</p>
+              </article>
+              <article class="fact-card">
+                <span>архив</span>
+                <strong>{{ gallery|length }} работ</strong>
+                <p>Достаточно, чтобы показать диапазон, но без визуального шума.</p>
+              </article>
+              <article class="fact-card">
+                <span>связь</span>
+                <strong>{{ contacts|length }} каналов</strong>
+                <p>Контакты встроены в UX так, чтобы к ним легко прийти из любого сценария просмотра.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="practice section" id="experience">
+      <div class="container-xl">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">practice</p>
+            <h2 class="section-title">Опыт, навыки и <span>рабочий ритм</span></h2>
+          </div>
+          <p class="section-note">Блок собран как спокойная практика: сначала путь и опыт, затем навыки и образование, чтобы рекрутер или заказчик быстро увидел систему работы.</p>
+        </div>
+
+        <div class="practice__grid">
+          <div class="practice__column practice__column--wide">
+            <div class="timeline-list">
+              {% for item in experience %}
+                <article class="timeline-card reveal">
+                  <div class="timeline-card__period">{{ item['period'] }}</div>
+                  <div class="timeline-card__content">
+                    <h3>{{ item['title'] }}</h3>
+                    <p class="timeline-card__org">{{ item['organization'] }}</p>
+                    <p>{{ item['description'] }}</p>
+                  </div>
+                </article>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="practice__column">
+            <div class="education-list">
+              {% for item in education %}
+                <article class="education-card reveal">
+                  <div class="education-card__period">{{ item['period'] }}</div>
+                  <div>
+                    <h3>{{ item['title'] }}</h3>
+                    <p class="education-card__org">{{ item['organization'] }}</p>
+                    <p>{{ item['description'] }}</p>
+                  </div>
+                </article>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-stack skill-stack--grid">
+          {% for item in skills %}
+            <article class="skill-card reveal">
+              <span>{{ '%02d'|format(loop.index) }}</span>
+              <h3>{{ item['category'] }}</h3>
+              <p>{{ item['items'] }}</p>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="projects section" id="projects">
+      <div class="container-xl">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">selected projects</p>
+            <h2 class="section-title">Три кейса как <span>основной вход</span></h2>
+          </div>
+          <p class="section-note">Первый проект работает как hero-case, два следующих поддерживают диапазон и показывают, что визуальная история собирается не в одной манере, а в системе.</p>
+        </div>
+
+        <div class="projects-grid">
+          {% for item in projects %}
+            <article class="project-card project-card--{{ 'featured' if loop.first else 'compact' }} reveal tilt-card"
+              data-bs-toggle="modal"
+              data-bs-target="#projectModal"
+              role="button"
+              tabindex="0"
+              aria-haspopup="dialog"
+              aria-label="Открыть проект {{ item['title'] }}"
+              data-title="{{ item['title'] }}"
+              data-subtitle="{{ item['subtitle'] }}"
+              data-description="{{ item['description'] }}"
+              data-image="{{ url_for('static', filename=item['image']) }}"
+              data-url="{{ item['url'] }}"
+              data-year="{{ item['year'] }}">
+              <div class="project-card__media">
+                <img src="{{ url_for('static', filename=item['image']) }}" alt="{{ item['title'] }}" loading="lazy" decoding="async">
+                <div class="project-card__overlay">
+                  <span class="project-card__index">{{ '%02d'|format(loop.index) }}</span>
+                  <span class="project-card__pill">{{ item['year'] }}</span>
+                </div>
+              </div>
+              <div class="project-card__body">
+                <p class="project-card__label">{{ item['subtitle'] }}</p>
+                <h3>{{ item['title'] }}</h3>
+                <p>{{ item['description'] }}</p>
+                <div class="project-card__footer">
+                  <span>открыть кейс</span>
+                  <span>↗</span>
+                </div>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery section" id="gallery">
+      <div class="container-xl">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">archive</p>
+            <h2 class="section-title">Дополнительные работы и <span>визуальный диапазон</span></h2>
+          </div>
+          <div class="gallery__toolbar">
+            <div class="filter-group">
+              <button class="filter-btn active" type="button" data-filter="all" aria-pressed="true" aria-controls="galleryGrid">всё</button>
+              <button class="filter-btn" type="button" data-filter="story" aria-pressed="false" aria-controls="galleryGrid">сюжеты</button>
+              <button class="filter-btn" type="button" data-filter="character" aria-pressed="false" aria-controls="galleryGrid">персонажи</button>
+              <button class="filter-btn" type="button" data-filter="landscape" aria-pressed="false" aria-controls="galleryGrid">пейзажи</button>
+              <button class="filter-btn" type="button" data-filter="print" aria-pressed="false" aria-controls="galleryGrid">принты</button>
+            </div>
+            <p class="gallery__status"><span id="galleryStatusLabel">все работы</span><strong id="galleryCount">{{ gallery|length }}</strong></p>
+          </div>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid">
+          {% for item in gallery %}
+            {% set variant = 'wide' if loop.index in [1, 6] else 'tall' if loop.index in [2, 4] else 'square' %}
+            <article class="gallery-item gallery-item--{{ variant }} reveal tilt-card"
+              data-category="{{ item['category'] }}"
+              data-bs-toggle="modal"
+              data-bs-target="#projectModal"
+              role="button"
+              tabindex="0"
+              aria-haspopup="dialog"
+              aria-label="Открыть работу {{ item['title'] }}"
+              data-title="{{ item['title'] }}"
+              data-subtitle="{{ item['category'] }}"
+              data-description="{{ item['caption'] }}"
+              data-image="{{ url_for('static', filename=item['image']) }}"
+              data-url="https://t.me/vinsentaaaa"
+              data-year="архив">
+              <img src="{{ url_for('static', filename=item['image']) }}" alt="{{ item['title'] }}" loading="lazy" decoding="async">
+              <div class="gallery-card__overlay">
+                <span>{{ item['category'] }}</span>
+                <h3>{{ item['title'] }}</h3>
+                <p>{{ item['caption'] }}</p>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="contact section" id="contact">
+      <div class="container-xl">
+        <div class="contact-layout">
+          <div class="contact-copy reveal">
+            <p class="eyebrow">contact</p>
+            <h2 class="section-title">Связаться <span>по делу</span></h2>
+            <p class="lead-copy">Секция собрана как реальный conversion-point: короткое объяснение, прямые каналы связи и аккуратная форма, которая не ломает визуальный ритм страницы.</p>
+
+            <div class="contact-points">
+              <article class="contact-point">
+                <span>подходит для</span>
+                <strong>обложек, poster art, print sets, editorial visual stories</strong>
+              </article>
+              <article class="contact-point">
+                <span>что лучше написать</span>
+                <strong>формат задачи, сроки, площадку размещения и желаемое настроение</strong>
+              </article>
+            </div>
+
+            <div class="contact-list">
+              {% for item in contacts %}
+                <a href="{{ item['url'] }}" target="_blank" rel="noopener noreferrer">{{ item['label'] }} — {{ item['value'] }}</a>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="contact-panel reveal">
+            <form class="contact-form" id="contactForm" novalidate>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label" for="name">Имя</label>
+                  <input class="form-control" type="text" id="name" name="name" placeholder="Как к вам обращаться" autocomplete="name" minlength="2" maxlength="80" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="contact">Контакт</label>
+                  <input class="form-control" type="text" id="contact" name="contact" placeholder="Telegram, email или телефон" autocomplete="on" minlength="3" maxlength="120" required>
+                </div>
+                <div class="col-12">
+                  <label class="form-label" for="message">Сообщение</label>
+                  <textarea class="form-control" id="message" name="message" rows="6" placeholder="Опишите задачу, сроки и желаемое настроение проекта" minlength="8" maxlength="1500" required></textarea>
+                </div>
+                <div class="col-12 contact-form__meta">
+                  <p>Чем конкретнее вводные, тем легче быстро предложить подход.</p>
+                  <p id="messageCounter">0 / 1500</p>
+                </div>
+                <div class="col-12 d-flex flex-wrap align-items-center gap-3">
+                  <button class="btn btn-accent magnetic" type="submit">отправить запрос</button>
+                  <p class="form-status mb-0" id="formStatus" aria-live="polite" role="status"></p>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container-xl site-footer__inner">
+      <div>
+        <p class="site-footer__title">{{ profile['name'] }} / editorial illustration portfolio</p>
+        <p class="site-footer__copy">Авторская витрина с живой типографикой, галереей, modal-view и серверной формой на Flask + SQLite.</p>
+      </div>
+      <a href="#home">наверх ↑</a>
+    </div>
+  </footer>
+
+  <div class="modal fade project-modal" id="projectModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <button type="button" class="btn-close btn-close-white ms-auto m-3" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+        <div class="modal-body p-0">
+          <div class="modal-project">
+            <div class="modal-project__image-wrap">
+              <img src="" alt="Превью проекта" class="modal-project__image" id="modalImage">
+            </div>
+            <div class="modal-project__content">
+              <div class="modal-project__meta">
+                <p class="eyebrow mb-0" id="modalSubtitle"></p>
+                <span id="modalYear"></span>
+              </div>
+              <h3 id="modalTitle"></h3>
+              <p id="modalDescription"></p>
+              <div class="modal-project__footer">
+                <span>источник / подробнее</span>
+                <a class="btn btn-accent" id="modalLink" href="#" target="_blank" rel="noopener noreferrer">открыть источник</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</body>
+</html>

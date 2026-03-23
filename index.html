@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Винсента — портфолио художницы</title>
+  <meta name="description" content="Лендинг-портфолио художницы Винсенты: иллюстрации, визуальные истории, природные сцены и атмосферные персонажи." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="preloader" aria-hidden="true">
+    <div class="preloader__inner">
+      <span class="preloader__scribble">✶</span>
+      <p>собираем галерею</p>
+    </div>
+  </div>
+
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a href="#home" class="logo">vinsenta<span>.</span></a>
+
+    <button class="menu-toggle" aria-label="Открыть меню" aria-expanded="false">
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav class="nav">
+      <a href="#about">обо мне</a>
+      <a href="#works">галерея</a>
+      <a href="#focus">направления</a>
+      <a href="#contact">контакты</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero section" id="home">
+      <div class="hero__bg-title">PORTFOLIO</div>
+
+      <div class="hero__content reveal" data-animate="up">
+        <p class="eyebrow">иллюстрация / визуальные истории / печатные серии</p>
+
+        <h1>
+          <span class="hero__line">Портфолио</span>
+          <span class="hero__line hero__line--accent">художницы</span>
+          <em>Винсенты</em>
+        </h1>
+
+        <p class="hero__text">
+          Тёплая меланхолия, природные сцены, персонажи и мягкая акварельная фактура.
+          Здесь собраны иллюстрации, печатные серии и визуальные истории,
+          в которых важны свет, тишина и чувство места.
+        </p>
+
+        <div class="hero__actions">
+          <a class="btn btn--primary magnetic" data-magnetic href="#works">смотреть работы</a>
+          <a class="btn btn--ghost magnetic" data-magnetic href="https://t.me/vinsentaaaa" target="_blank" rel="noreferrer">telegram</a>
+        </div>
+
+        <div class="hero__chips">
+          <span>visual stories</span>
+          <span>nature scenes</span>
+          <span>print mood</span>
+          <span>soft noir</span>
+        </div>
+
+        <div class="palette-preview reveal" data-animate="up">
+          <div class="palette-preview__swatch palette-preview__swatch--olive"></div>
+          <div class="palette-preview__swatch palette-preview__swatch--gold"></div>
+          <div class="palette-preview__swatch palette-preview__swatch--cream"></div>
+          <div class="palette-preview__swatch palette-preview__swatch--rose"></div>
+          <div class="palette-preview__swatch palette-preview__swatch--peach"></div>
+        </div>
+      </div>
+
+      <div class="hero__visual reveal tilt-card" data-animate="left">
+        <div class="hero__halo"></div>
+        <div class="hero__card parallax-card">
+          <div class="hero__badge">цветение ✶</div>
+          <img src="assets/hero-feature.jpg" alt="Иллюстрация художницы Винсенты" />
+          <div class="hero__caption">
+            <span>featured artwork</span>
+            <strong>персонажи, свет и хрупкая весенняя атмосфера</strong>
+          </div>
+        </div>
+        <span class="float-note float-note--one">☾</span>
+        <span class="float-note float-note--two">spring hush</span>
+      </div>
+    </section>
+
+    <section class="marquee section">
+      <div class="marquee__track">
+        <span>иллюстрации / персонажи / природные сцены / печатные серии / визуальные истории /</span>
+        <span>иллюстрации / персонажи / природные сцены / печатные серии / визуальные истории /</span>
+      </div>
+    </section>
+
+    <section class="about section" id="about">
+      <div class="section-heading reveal" data-animate="up">
+        <p class="eyebrow">обо мне</p>
+        <h2>Нежная палитра,<br><span>природные мотивы</span> и сюжетные сцены.</h2>
+      </div>
+
+      <div class="about__grid">
+        <div class="about__visual reveal tilt-card" data-animate="right">
+          <div class="about__frame about__frame--back"></div>
+          <div class="about__frame about__frame--front">
+            <img src="assets/about-feature.jpg" alt="Подборка печатных работ художницы" />
+          </div>
+          <div class="about__stamp">printed pieces</div>
+        </div>
+
+        <div class="about__content reveal" data-animate="up">
+          <p>
+            В работах Винсенты соединяются светлая сказочность, память о местах,
+            весенний воздух и человеческая близость. Иллюстрации выглядят мягко,
+            но при этом держат сильный композиционный ритм и узнаваемую палитру.
+          </p>
+          <p>
+            В этих работах часто встречаются весеннее цветение, дома, лесные тропы,
+            тонкие жесты персонажей и ощущение хрупкого, почти сказочного времени.
+          </p>
+
+          <div class="about__facts">
+            <div>
+              <span>темы</span>
+              <strong>природа, память, персонажи</strong>
+            </div>
+            <div>
+              <span>форматы</span>
+              <strong>иллюстрации, принты, серии</strong>
+            </div>
+            <div>
+              <span>палитра</span>
+              <strong>olive / blush / daisy</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="works section" id="works">
+      <div class="section-heading reveal" data-animate="up">
+        <p class="eyebrow">галерея</p>
+        <h2>Избранные <span>работы</span></h2>
+      </div>
+
+      <div class="filters reveal" data-animate="up" role="tablist" aria-label="Фильтр работ">
+        <button class="filter-btn active" data-filter="all">всё</button>
+        <button class="filter-btn" data-filter="landscape">пейзажи</button>
+        <button class="filter-btn" data-filter="character">персонажи</button>
+        <button class="filter-btn" data-filter="story">сюжеты</button>
+      </div>
+
+      <div class="works__grid">
+        <article class="art-card art-card--feature reveal tilt-card" data-animate="up" data-category="landscape story" data-modal="true" data-title="Берег и серия принтов" data-caption="Подборка листов с природными сценами, водой, зеленью и мягким печатным ощущением." data-image="assets/prints.jpg">
+          <img class="art-card__image" src="assets/prints.jpg" alt="Подборка печатных работ" />
+          <div class="art-card__overlay">
+            <span>print series</span>
+            <h3>Берег и серия принтов</h3>
+          </div>
+        </article>
+
+        <article class="art-card art-card--portrait reveal tilt-card" data-animate="up" data-category="story character" data-modal="true" data-title="Прогулка под облаками" data-caption="Сюжетная сцена с персонажами, домом, полем и облаком как главным эмоциональным акцентом." data-image="assets/cloud-walk.jpg">
+          <img class="art-card__image" src="assets/cloud-walk.jpg" alt="Иллюстрация с персонажами и домом" />
+          <div class="art-card__overlay">
+            <span>story scene</span>
+            <h3>Прогулка под облаками</h3>
+          </div>
+        </article>
+
+        <article class="art-card art-card--text reveal" data-animate="up" data-category="story">
+          <div class="art-card__text-block">
+            <span class="art-card__kicker">атмосфера</span>
+            <h3>Свет, воздух и тихие детали делают каждую сцену почти осязаемой.</h3>
+            <p>В центре — настроение места: шелест ветвей, тепло закатного неба, весенний сад и мягкая близость между героями.</p>
+          </div>
+        </article>
+
+        <article class="art-card art-card--square reveal tilt-card" data-animate="up" data-category="landscape" data-modal="true" data-title="Дом в цветущем саду" data-caption="Спокойная пейзажная работа: дом, сад, светлое небо и собранная пастельная палитра." data-image="assets/green-house.jpg">
+          <img class="art-card__image" src="assets/green-house.jpg" alt="Иллюстрация дома в саду" />
+          <div class="art-card__overlay">
+            <span>landscape</span>
+            <h3>Дом в цветущем саду</h3>
+          </div>
+        </article>
+
+        <article class="art-card art-card--portrait reveal tilt-card" data-animate="up" data-category="character story" data-modal="true" data-title="Лесные сёстры" data-caption="Портретная сцена на фоне леса, где композиция строится через руки, линии ветвей и мягкий свет." data-image="assets/forest-sisters.jpg">
+          <img class="art-card__image" src="assets/forest-sisters.jpg" alt="Иллюстрация с двумя девушками" />
+          <div class="art-card__overlay">
+            <span>character scene</span>
+            <h3>Лесные сёстры</h3>
+          </div>
+        </article>
+
+        <article class="art-card art-card--square reveal tilt-card" data-animate="up" data-category="character" data-modal="true" data-title="Окно и цветение" data-caption="Крупный портретный кадр с ветвями, светом и деликатной палитрой вокруг лица." data-image="assets/window-blossom.jpg">
+          <img class="art-card__image" src="assets/window-blossom.jpg" alt="Портрет девушки среди цветущих ветвей" />
+          <div class="art-card__overlay">
+            <span>portrait</span>
+            <h3>Окно и цветение</h3>
+          </div>
+        </article>
+
+        <article class="art-card art-card--wide reveal tilt-card" data-animate="up" data-category="story landscape" data-modal="true" data-title="Весенняя повозка" data-caption="Большая сюжетная сцена с цветущим пространством, движением и ощущением старой сказки." data-image="assets/spring-carriage.jpg">
+          <img class="art-card__image" src="assets/spring-carriage.jpg" alt="Иллюстрация с повозкой в цветущем лесу" />
+          <div class="art-card__overlay">
+            <span>wide story</span>
+            <h3>Весенняя повозка</h3>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="focus section" id="focus">
+      <div class="section-heading reveal" data-animate="up">
+        <p class="eyebrow">мотивы</p>
+        <h2>Что живёт в этих <span>работах</span></h2>
+      </div>
+
+      <div class="focus__grid">
+        <article class="focus-card reveal" data-animate="up">
+          <span>01</span>
+          <h3>Свет, воздух и тишина</h3>
+          <p>Мягкое небо, прозрачные тени, тёплые блики и ощущение медленного дыхания пространства.</p>
+        </article>
+
+        <article class="focus-card reveal" data-animate="up">
+          <span>02</span>
+          <h3>Память о местах</h3>
+          <p>Дома, сады, тропы, берега и лесные сцены, которые выглядят как воспоминание или сон.</p>
+        </article>
+
+        <article class="focus-card reveal" data-animate="up">
+          <span>03</span>
+          <h3>Хрупкая близость</h3>
+          <p>Персонажи, жесты и взгляды, через которые появляется чувство нежности, сказочности и внутреннего тепла.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="contact section" id="contact">
+      <div class="contact__panel reveal" data-animate="up">
+        <p class="eyebrow">контакты</p>
+        <h2>Открыта к <span>коллаборациям</span>, сериям и визуальным проектам.</h2>
+        <p>
+          Для сотрудничества, заказов и предложений по иллюстрациям, печатным сериям
+          и визуальным историям можно написать в Telegram или Instagram.
+        </p>
+        <div class="contact__actions">
+          <a class="btn btn--primary magnetic" data-magnetic href="https://t.me/vinsentaaaa" target="_blank" rel="noreferrer">telegram-канал</a>
+          <a class="btn btn--ghost magnetic" data-magnetic href="https://www.instagram.com/_vinsenta/" target="_blank" rel="noreferrer">instagram</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>портфолио художницы Винсенты</p>
+    <a href="#home">наверх ↑</a>
+  </footer>
+
+  <div class="lightbox" aria-hidden="true">
+    <button class="lightbox__close" aria-label="Закрыть просмотр">×</button>
+    <div class="lightbox__inner">
+      <img src="" alt="Увеличенная работа" class="lightbox__image" />
+      <div class="lightbox__content">
+        <span class="lightbox__label">preview</span>
+        <h3 class="lightbox__title"></h3>
+        <p class="lightbox__caption"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
