@@ -1,9 +1,0 @@
-__pycache__/
-*.py[cod]
-
-.deps/
-deps_local/
-.venv/
-venv/
-
-Thumbs.db
