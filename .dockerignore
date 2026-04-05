@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.git/
+.gitignore
+.deps/
+deps_local/
+.venv/
+venv/
+tests/
+docs/
+.figma-capture/
+.tmp-pip/
+vendor_wheels/
+Thumbs.db

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>База заявок | {{ total }} сообщений</title>
+  <meta name="theme-color" content="#A3A380" />
+  <link rel="preload" as="font" href="{{ url_for('static', filename='fonts/Klyakson.otf') }}" type="font/otf" crossorigin />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    @font-face {
+      font-family: "Klyakson";
+      src: url("{{ url_for('static', filename='fonts/Klyakson.otf') }}") format("opentype");
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "SF Pro";
+      src: local("SF Pro Display"), local("SF Pro Text"), local("SF Pro");
+      font-display: swap;
+    }
+
+    :root {
+      --font-body: "SF Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-heading: "Klyakson", "SF Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --bg: #120b10;
+      --panel: rgba(33, 19, 24, 0.82);
+      --paper: #fff7f8;
+      --text: #fff3f5;
+      --text-soft: rgba(255, 243, 245, 0.8);
+      --muted: rgba(255, 223, 228, 0.62);
+      --line: rgba(163, 163, 128, 0.18);
+      --line-strong: rgba(163, 163, 128, 0.32);
+      --accent: #a3a380;
+      --accent-light: #c1c1a4;
+      --accent-rgb: 163, 163, 128;
+      --shadow: 0 28px 90px rgba(0, 0, 0, 0.3);
+      --radius-xl: 36px;
+      --radius-lg: 26px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      font-family: var(--font-body);
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 12%, rgba(var(--accent-rgb), 0.22), transparent 22%),
+        radial-gradient(circle at 85% 10%, rgba(var(--accent-rgb), 0.14), transparent 28%),
+        linear-gradient(180deg, #140b10 0%, #1c1117 48%, #150b10 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      width: 28rem;
+      height: 28rem;
+      left: -10rem;
+      top: 16rem;
+      background: radial-gradient(circle, rgba(var(--accent-rgb), 0.2), rgba(var(--accent-rgb), 0));
+      filter: blur(16px);
+    }
+
+    body::after {
+      width: 24rem;
+      height: 24rem;
+      right: -8rem;
+      bottom: 8rem;
+      background: radial-gradient(circle, rgba(var(--accent-rgb), 0.14), rgba(var(--accent-rgb), 0));
+      filter: blur(18px);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.08;
+      background-image:
+        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.8) 0 0.5px, transparent 0.8px),
+        radial-gradient(circle at 72% 28%, rgba(255, 255, 255, 0.75) 0 0.6px, transparent 0.9px),
+        radial-gradient(circle at 36% 76%, rgba(255, 255, 255, 0.7) 0 0.55px, transparent 0.85px);
+      background-size: 180px 180px;
+      z-index: 0;
+    }
+
+    .admin-shell {
+      position: relative;
+      z-index: 1;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 14px;
+      z-index: 30;
+      padding: 14px 0 0;
+    }
+
+    .container-xl {
+      position: relative;
+      z-index: 1;
+    }
+
+    .site-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.95rem 1.15rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(16, 13, 12, 0.7);
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(18px);
+    }
+
+    .site-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: clamp(42px, 4.6vw, 54px);
+      flex-shrink: 0;
+    }
+
+    .site-logo img {
+      display: block;
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 8px 12px rgba(var(--accent-rgb), 0.12));
+    }
+
+    .site-nav__meta {
+      margin-right: auto;
+    }
+
+    .site-nav__title {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      line-height: 1;
+      color: var(--paper);
+    }
+
+    .nav-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+    }
+
+    .nav-pill:hover {
+      transform: translateY(-2px);
+      color: var(--paper);
+    }
+
+    .page {
+      padding: 40px 0 80px;
+    }
+
+    .table-panel {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .table-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), transparent 42%);
+      pointer-events: none;
+    }
+
+    .table-responsive {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      border-radius: inherit;
+    }
+
+    .messages-table {
+      margin: 0;
+      min-width: 900px;
+      color: var(--text);
+      --bs-table-bg: transparent;
+      --bs-table-color: var(--text);
+      --bs-table-border-color: var(--line);
+      --bs-table-hover-color: var(--paper);
+      --bs-table-hover-bg: rgba(255, 255, 255, 0.03);
+      --bs-table-striped-color: var(--text);
+      --bs-table-striped-bg: rgba(255, 255, 255, 0.02);
+    }
+
+    .messages-table thead th {
+      padding: 1.1rem 1rem;
+      border-bottom: 1px solid var(--line-strong);
+      color: var(--accent-light);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      background: rgba(11, 8, 10, 0.54);
+    }
+
+    .messages-table tbody td {
+      padding: 1rem;
+      vertical-align: top;
+      border-color: var(--line);
+      color: var(--text-soft);
+      line-height: 1.7;
+    }
+
+    .messages-table tbody tr:hover td {
+      color: var(--paper);
+    }
+
+    .messages-table__id {
+      color: var(--accent-light);
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      white-space: nowrap;
+    }
+
+    .messages-table__name {
+      color: var(--paper);
+      font-weight: 600;
+      min-width: 10rem;
+    }
+
+    .messages-table__contact a {
+      color: var(--accent-light);
+    }
+
+    .messages-table__message {
+      min-width: 26rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .messages-table__date {
+      min-width: 11rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .empty-state {
+      padding: 3rem 1.5rem;
+      text-align: center;
+      border-radius: var(--radius-lg);
+      border: 1px dashed var(--line-strong);
+      color: var(--muted);
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    @media (max-width: 767.98px) {
+      .site-nav {
+        flex-wrap: wrap;
+        border-radius: 28px;
+      }
+
+      .site-nav__meta {
+        width: 100%;
+        order: 2;
+      }
+
+      .page {
+        padding-top: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="admin-shell">
+    <header class="site-header">
+      <div class="container-xl">
+        <nav class="site-nav" aria-label="Навигация по странице базы данных">
+          <a class="site-logo" href="/" aria-label="Вернуться на главную страницу">
+            <img src="{{ url_for('static', filename='assets/site-logo.svg') }}" alt="">
+          </a>
+
+          <div class="site-nav__meta">
+            <div class="site-nav__title">Сообщения из формы</div>
+          </div>
+
+          <a href="/" class="nav-pill">на сайт</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <div class="container-xl">
+        {% if messages %}
+          <section class="table-panel" aria-label="Таблица сообщений из формы">
+            <div class="table-responsive">
+              <table class="table table-striped table-hover align-middle messages-table">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Контакт</th>
+                    <th scope="col">Сообщение</th>
+                    <th scope="col">Дата</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for message in messages %}
+                    <tr>
+                      <td class="messages-table__id">#{{ message.id }}</td>
+                      <td class="messages-table__name">{{ message.name }}</td>
+                      <td class="messages-table__contact">
+                        {% if '@' in message.contact %}
+                          <a href="mailto:{{ message.contact }}">{{ message.contact }}</a>
+                        {% else %}
+                          {{ message.contact }}
+                        {% endif %}
+                      </td>
+                      <td class="messages-table__message">{{ message.message }}</td>
+                      <td class="messages-table__date">{{ message.created_at }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        {% else %}
+          <div class="empty-state">
+            Пока нет ни одного сообщения.
+          </div>
+        {% endif %}
+      </div>
+    </main>
+  </div>
+</body>
+</html>

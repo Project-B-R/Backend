@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+
+.deps/
+deps_local/
+.venv/
+venv/
+docs/
+.figma-capture/
+.tmp-pip/
+
+Thumbs.db
