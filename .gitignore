@@ -8,5 +8,7 @@ venv/
 docs/
 .figma-capture/
 .tmp-pip/
+.env
+.env.*
 
 Thumbs.db

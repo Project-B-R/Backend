@@ -1,14 +1,19 @@
 from __future__ import annotations
 
+import json
 import os
 import sqlite3
 from pathlib import Path
 from typing import Any, Mapping
+from urllib.error import HTTPError
+from urllib.parse import quote
+from urllib.request import Request, urlopen
 
 from flask import Flask, current_app, g, jsonify, render_template, request
 
 BASE_DIR = Path(__file__).resolve().parent
 DEFAULT_DB_PATH = BASE_DIR / 'data' / 'portfolio.db'
+SUPABASE_SUBMISSIONS_TABLE = 'submissions'
 
 CONTENT_QUERIES = {
     'contacts': 'SELECT * FROM contacts ORDER BY sort_order, id',
@@ -34,6 +39,34 @@ def resolve_database_path() -> Path:
         database_path = BASE_DIR / database_path
 
     return database_path
+
+
+def use_supabase_submissions() -> bool:
+    return bool(
+        os.getenv('SUPABASE_URL')
+        and os.getenv('SUPABASE_SERVICE_ROLE_KEY')
+    )
+
+
+def build_supabase_request(path: str, *, method: str = 'GET', payload: Any | None = None) -> Request:
+    base_url = os.environ['SUPABASE_URL'].rstrip('/')
+    service_role_key = os.environ['SUPABASE_SERVICE_ROLE_KEY']
+    body = None if payload is None else json.dumps(payload, ensure_ascii=False).encode('utf-8')
+    request_headers = {
+        'apikey': service_role_key,
+        'Authorization': f'Bearer {service_role_key}',
+    }
+
+    if body is not None:
+        request_headers['Content-Type'] = 'application/json'
+        request_headers['Prefer'] = 'return=minimal'
+
+    return Request(
+        url=f'{base_url}{path}',
+        data=body,
+        headers=request_headers,
+        method=method,
+    )
 
 
 def create_app(test_config: Mapping[str, Any] | None = None) -> Flask:
@@ -329,9 +362,37 @@ def fetch_all() -> dict[str, Any]:
 
 
 def fetch_submissions() -> list[dict[str, Any]]:
+    if use_supabase_submissions():
+        select_fields = quote('id,name,contact,message,created_at', safe=',')
+        request_obj = build_supabase_request(
+            f'/rest/v1/{SUPABASE_SUBMISSIONS_TABLE}?select={select_fields}&order=created_at.desc,id.desc'
+        )
+        with urlopen(request_obj, timeout=10) as response:
+            payload = response.read().decode('utf-8')
+        return list(json.loads(payload) if payload else [])
+
     db = get_db()
     rows = db.execute(SUBMISSIONS_QUERY).fetchall()
     return serialize_rows(rows)
+
+
+def save_submission(submission: dict[str, str]) -> None:
+    if use_supabase_submissions():
+        request_obj = build_supabase_request(
+            f'/rest/v1/{SUPABASE_SUBMISSIONS_TABLE}',
+            method='POST',
+            payload=submission,
+        )
+        with urlopen(request_obj, timeout=10):
+            pass
+        return
+
+    db = get_db()
+    db.execute(
+        'INSERT INTO submissions (name, contact, message) VALUES (?, ?, ?)',
+        (submission['name'], submission['contact'], submission['message']),
+    )
+    db.commit()
 
 
 def register_routes(app: Flask) -> None:
@@ -345,7 +406,13 @@ def register_routes(app: Flask) -> None:
 
     @app.get('/health')
     def health() -> Any:
-        return jsonify({'ok': True, 'database': str(current_app.config['DATABASE'])})
+        return jsonify(
+            {
+                'ok': True,
+                'database': str(current_app.config['DATABASE']),
+                'submissions_backend': 'supabase' if use_supabase_submissions() else 'sqlite',
+            }
+        )
 
     @app.post('/api/messages')
     def api_messages() -> Any:
@@ -362,15 +429,28 @@ def register_routes(app: Flask) -> None:
                 }
             ), 400
 
-        db = get_db()
         try:
-            db.execute(
-                'INSERT INTO submissions (name, contact, message) VALUES (?, ?, ?)',
-                (submission['name'], submission['contact'], submission['message']),
-            )
-            db.commit()
+            save_submission(submission)
         except sqlite3.DatabaseError:
-            db.rollback()
+            db = g.get('db')
+            if db is not None:
+                db.rollback()
+            current_app.logger.exception('Failed to save contact form submission')
+            return jsonify(
+                {
+                    'ok': False,
+                    'message': 'Не удалось сохранить сообщение. Попробуйте ещё раз.',
+                }
+            ), 500
+        except HTTPError:
+            current_app.logger.exception('Supabase rejected contact form submission')
+            return jsonify(
+                {
+                    'ok': False,
+                    'message': 'Не удалось сохранить сообщение. Проверьте настройки базы Supabase.',
+                }
+            ), 500
+        except Exception:
             current_app.logger.exception('Failed to save contact form submission')
             return jsonify(
                 {
