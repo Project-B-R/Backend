@@ -7,7 +7,7 @@
 - `app.py` — Flask-приложение и маршруты.
 - `run_server.py` — production-запуск через `waitress`.
 - `templates/` — серверные HTML-шаблоны.
-- `static/` — общие стили, скрипты, шрифты и изображения.
+- `static/` — общие стили, скрипты, шрифты и изображения. 
 - `data/portfolio.db` — SQLite-база с контентом сайта.
 - `supabase_submissions.sql` — SQL-схема таблицы сообщений для Supabase.
 - `Dockerfile` — контейнерный запуск для деплоя.
